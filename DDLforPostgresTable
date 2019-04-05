@@ -1,1 +1,15 @@
+'Login Table
+'Create Table Query
+Create Table LoginInfo (Username Varchar(30) NOT NULL,Password Varchar(30) NOT NULL, 
+Role Char(50) Not Null,Primary Key(Username));
+'Insert Test Data
+Insert into LoginInfo (Username,Password,Role) Values('nisha','xyz','Analyst');
+Insert into LoginInfo (Username,Password,Role) Values('verma','xyz','Submitter');
+
+'sampleData Table
+'Create Table Query
+Create Table sampledata (name Varchar(30),sampleid INT, analyte Char(50),result Char(50),
+submitter Char(50),Primary Key(sampleid));
+
+
 
