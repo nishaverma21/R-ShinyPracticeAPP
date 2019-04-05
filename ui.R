@@ -6,21 +6,24 @@
 #install.packages("shinyjs")
 #‘/tmp/Rtmp0uo3Nl/downloaded_packages’
 #install.packages("shinythemes")
-#install.packages("V8")
+#install.packages("RPostgreSQL")
 
+
+# cleaning R memory
 rm(list=ls())
+# calling required libraries
 library(shiny)
-#library(shinyjs)
-#library(shinythemes)
+library(shinyjs)
+#library(shinythemes) #- This can be used for attractive application
 
-
+#ui code
 ui <- fluidPage(#theme = shinytheme("superhero"),
-                
+                # useShinyjs for any custommessage need into application
                 useShinyjs(),
                 tags$head(tags$script(HTML('Shiny.addCustomMessageHandler("jsCode",function(message) {eval(message.value);});'))),
-                
+                # All Tabs of application
                 tabsetPanel(id ="Pages",
-                        #TAB ONE - LOGIN PAGE
+                        #TAB ONE - LOGINPAGE
                         tabPanel(title = "LoginPage",       
                             titlePanel("Welcome to Data Analysis Tool of Health Desease"),
                             hr(),
@@ -32,7 +35,7 @@ ui <- fluidPage(#theme = shinytheme("superhero"),
                               actionButton(inputId = "login",label="LOGIN",width = "70px",style="display:right-align")))))
                               ,hr(),
                        
-                        #TAB TWO - UPLOAD PAGE
+                        #TAB TWO - SUBMITDATA PAGE
                         tabPanel(title = "SubmitData",
                             titlePanel("Submit Data or Result to Determine Risk of Healh Desease"),
                             hr(),
@@ -45,10 +48,8 @@ ui <- fluidPage(#theme = shinytheme("superhero"),
                                           accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv')),
                                 actionButton(inputId = "Submit",label="Submit")
                                 ))))),
-                              
-                        
                             
-                        #TAB FOUR - GRAPH
+                        #TAB THREE - View Result
                         tabPanel(title = "View Result",
                             titlePanel("Check the result updated by analyst correspond to different heart attributes"),
                             sidebarLayout(
@@ -62,9 +63,7 @@ ui <- fluidPage(#theme = shinytheme("superhero"),
                               downloadLink('downloadResult', 'Download Result')
                               ))),
                               
-                            
-                            
-                        #TAB THREE - DATA TO ANALYZE
+                        #TAB FOUR - Extract Data To Analyze
                         tabPanel(title = "Extract Data To Analyze",
                                  titlePanel("Analyst will extract data to be analyzed"),
                                  sidebarLayout(
@@ -74,7 +73,7 @@ ui <- fluidPage(#theme = shinytheme("superhero"),
                                      br(),
                                      downloadLink('downloadData', 'Download Data to be analyzed')
                                    )))
-                        ))
+              ))
                         
   
 
