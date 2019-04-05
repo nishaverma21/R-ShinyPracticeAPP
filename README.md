@@ -26,7 +26,7 @@ If there is no such record available in database then a pop-up message will disp
 Submitter can Download Result by clicking "Download Result" link on application on this tab
 
 If user role is as 'Analyst' then 
-On View Result tab, if analyst try to fetch result after clicking result button, pop-up message will appear which says - ONLY SUBMITTER CAR VIEW RESULT FOR DATA SUBMITTED
+On View Result tab, if analyst try to fetch result after clicking result button, pop-up message will appear which says - ONLY SUBMITTER CAN VIEW RESULT FOR DATA SUBMITTED
 
 -----Extract Data To Analyze------
 If user role is as 'Submitter' then 
