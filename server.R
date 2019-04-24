@@ -17,8 +17,8 @@ con <- DBI::dbConnect(
 
 # server code for application
 server <- function(input, output, session) {
-
-####################################### APP Pre-Requists ####################################
+  
+  ####################################### APP Pre-Requists ####################################
   
   # fetching usename entered by user
   user<- reactive({
@@ -38,9 +38,9 @@ server <- function(input, output, session) {
                                                     ?username and password = ?password and role = ?role ; "), 
                                            username = user(),password = paswd(),role = 'Analyst'))
   })
-
-####################################### LOGINPAGE Pre-Requists ####################################
-
+  
+  ####################################### LOGINPAGE Pre-Requists ####################################
+  
   # fetching count of records available into db with username and password entered by user
   # this will be used in further code to pop up messages if correct username and password is entered or not
   queryout<-reactive({
@@ -48,10 +48,10 @@ server <- function(input, output, session) {
                                                     ?username and password = ?password ; "), 
                                            username = user(),password = paswd()))
   })
-
-####################################### LOGINPAGE FUNCTIONALITY ####################################
   
-# What will happen when user clicks Login Button on login page
+  ####################################### LOGINPAGE FUNCTIONALITY ####################################
+  
+  # What will happen when user clicks Login Button on login page
   observeEvent(input$login ,{
     x<-queryout()
     js_string <- 'alert("Incorrect Credentials");'
@@ -61,7 +61,7 @@ server <- function(input, output, session) {
       updateTabsetPanel(session = session, inputId = "Pages",selected = "SubmitData")
   })
   
-######################## SUBMITDATA PAGE Pre-Requists #######################################  
+  ######################## SUBMITDATA PAGE Pre-Requists #######################################  
   
   output$contents <- renderTable({
     req(input$file1)
@@ -75,7 +75,7 @@ server <- function(input, output, session) {
   output$datatable <- renderTable({
     uploadDataframe()
   })
-######################## SUBMITDATA PAGE FUNCTIONALITY#######################################  
+  ######################## SUBMITDATA PAGE FUNCTIONALITY#######################################  
   # Table displayed on Tab with Role and username information
   output$table <- DT::renderDataTable({
     sql <- ("SELECT Username,Role from logininfo where username = ?username and password = ?password ; ")
@@ -90,50 +90,50 @@ server <- function(input, output, session) {
     submitter<-user()
     role <- AnalystRole()
     if (role ==0){
-    for(i in 1:nrow(sampledata)){
-      data = sampledata[i,]
-      sql<- "Insert into sampledata (name,sampleid,analyte,result,submitter) values (?name,?sampleid,?analyte,?result,?submitter);"
-      query<- sqlInterpolate(ANSI(), sql,name = as.character(data$name),sampleid = as.character(data$sampleid),analyte = as.character(data$analyte),result = "",submitter = as.character(submitter))
-      outp <- dbSendQuery(con, query)
-    }
+      for(i in 1:nrow(sampledata)){
+        data = sampledata[i,]
+        sql<- "Insert into sampledata (name,sampleid,analyte,analyteid,result,submitter) values (?name,?sampleid,?analyte,?analyteid,?result,?submitter);"
+        query<- sqlInterpolate(ANSI(), sql,name = as.character(data$name),sampleid = as.character(data$sampleid),analyte = as.character(data$analyte),analyteid = "" ,result = "",submitter = as.character(submitter))
+        outp <- dbSendQuery(con, query)
+      }
       js_string <- 'alert("Data Uploaded Successfully");'
       session$sendCustomMessage(type='jsCode', list(value =  js_string))
     }
     else{
       if (any(names(sampledata) == 'result')){
-      for(i in 1:nrow(sampledata)){
-        data = sampledata[i,]
-        sql<- "Update sampledata set result = ?result where sampleid = ?sampleid;"
-        query<- sqlInterpolate(ANSI(), sql,result = as.character(data$result),sampleid = as.character(data$sampleid))
-        outp <- dbSendQuery(con, query) 
-      }
-      js_string <- 'alert("Result Updated Successfully");'
-      session$sendCustomMessage(type='jsCode', list(value =  js_string))
-      
+        for(i in 1:nrow(sampledata)){
+          data = sampledata[i,]
+          sql<- "Update sampledata set result = ?result,analyteid = ?analyteid where sampleid = ?sampleid;"
+          query<- sqlInterpolate(ANSI(), sql,result = as.character(data$result),analyteid=as.character(data$analyteid),sampleid = as.character(data$sampleid))
+          outp <- dbSendQuery(con, query) 
+        }
+        js_string <- 'alert("Result Updated Successfully");'
+        session$sendCustomMessage(type='jsCode', list(value =  js_string))
+        
       } 
       else{
         js_string <- 'alert("You only have access to upload result,kindly upload file with result field");'
         session$sendCustomMessage(type='jsCode', list(value =  js_string))
-          }
       }
+    }
   })
-
-
-######################## VIEW RESULT PAGE Pre-Requists #######################################  
- 
+  
+  
+  ######################## VIEW RESULT PAGE Pre-Requists #######################################  
+  
   AnalystResult <- reactive({
     outp1 <- dbGetQuery(con, sqlInterpolate(ANSI(), 
-                                            "Select * from sampledata where upper(name) = ?dataname and 
+                                            "Select * from sampledata1 where upper(name) = ?dataname and 
                                             analyte = ?analyte and result <>'' and submitter = ?submitter ;",
                                             dataname = toupper(input$name) ,analyte  =input$x, submitter = user() ))
   })
-
+  
   NoData <-reactive({
-  outp <- dbGetQuery(con, sqlInterpolate(ANSI(), ("Select count(*) from sampledata where upper(name) = ?dataname and analyte 
+    outp <- dbGetQuery(con, sqlInterpolate(ANSI(), ("Select count(*) from sampledata where upper(name) = ?dataname and analyte 
                                                     = ?analyte and result <>'' and submitter = ?submitter ;"), 
-                                         dataname = toupper(input$name) ,analyte  =input$x, submitter = user()))
+                                           dataname = toupper(input$name) ,analyte  =input$x, submitter = user()))
   })
-######################## VIEW RESULT PAGE FUNCTIONALITY#######################################  
+  ######################## VIEW RESULT PAGE FUNCTIONALITY#######################################  
   
   # code to allow user to select different heart desease cordinates
   output$SelectX<-renderUI({
@@ -148,20 +148,20 @@ server <- function(input, output, session) {
       session$sendCustomMessage(type='jsCode', list(value =  js_string))
     }
     else if (role==0){
-    output$table1<- DT::renderDataTable({
-      submitter<-user()
-      sql1<- "Select * from sampledata where upper(name) = ?dataname and analyte = ?analyte and result <>'' and submitter = ?submitter ;"
-      query1<- sqlInterpolate(ANSI(), sql1, dataname = toupper(input$name) ,analyte  =input$x, submitter = submitter )
-      outp1 <- dbGetQuery(con, query1)
-      ret <- DT::datatable(outp1)
-      return(ret)
+      output$table1<- DT::renderDataTable({
+        submitter<-user()
+        sql1<- "Select * from sampledata where upper(name) = ?dataname and analyte = ?analyte and result <>'' and submitter = ?submitter ;"
+        query1<- sqlInterpolate(ANSI(), sql1, dataname = toupper(input$name) ,analyte  =input$x, submitter = submitter )
+        outp1 <- dbGetQuery(con, query1)
+        ret <- DT::datatable(outp1)
+        return(ret)
       })
     }
     else{
       js_string <- 'alert("ONLY SUBMITTER CAN VIEW RESULT FOR DATA SUBMIITED");'
       session$sendCustomMessage(type='jsCode', list(value =  js_string))
     }
-
+    
   })
   
   # code for Download Result
@@ -174,12 +174,12 @@ server <- function(input, output, session) {
       write.csv(AnalystResult(), file)
     }
   )
-######################## EXTRACT DATA To ANALYZE Pre-Requists #######################################  
+  ######################## EXTRACT DATA To ANALYZE Pre-Requists #######################################  
   datatoAnalyze <- reactive( {
     outp2 <- dbGetQuery(con, sqlInterpolate(ANSI(), "Select * from sampledata where result ='' ;" ))
   })
-
-######################## EXTRACT DATA To ANALYZE #######################################  
+  
+  ######################## EXTRACT DATA To ANALYZE #######################################  
   
   # what will happen when Extract Data button clicks
   observeEvent(input$Extract ,{
@@ -189,11 +189,11 @@ server <- function(input, output, session) {
         js_string <- 'alert("Submitter have no access to fetch this information");'
         session$sendCustomMessage(type='jsCode', list(value =  js_string))
       } else{ 
-      sql2<- "Select * from sampledata where result ='' ;"
-      query2<- sqlInterpolate(ANSI(), sql2 )
-      outp2 <- dbGetQuery(con, query2)
-      ret <- DT::datatable(outp2)
-      return(ret)
+        sql2<- "Select * from sampledata where result ='' ;"
+        query2<- sqlInterpolate(ANSI(), sql2 )
+        outp2 <- dbGetQuery(con, query2)
+        ret <- DT::datatable(outp2)
+        return(ret)
       }
     }))
   })
