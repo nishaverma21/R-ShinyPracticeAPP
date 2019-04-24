@@ -96,7 +96,7 @@ server <- function(input, output, session) {
       query<- sqlInterpolate(ANSI(), sql,name = as.character(data$name),sampleid = as.character(data$sampleid),analyte = as.character(data$analyte),result = "",submitter = as.character(submitter))
       outp <- dbSendQuery(con, query)
     }
-      js_string <- 'alert("");'
+      js_string <- 'alert("Data Uploaded Successfully");'
       session$sendCustomMessage(type='jsCode', list(value =  js_string))
     }
     else{
@@ -137,7 +137,7 @@ server <- function(input, output, session) {
   
   # code to allow user to select different heart desease cordinates
   output$SelectX<-renderUI({
-    selectInput('x', 'Select Coordinate X', choices = c("cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal","age","sex"),selected = "chol")
+    selectInput('x', 'Select Analyte', choices = c("cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal","age","sex"),selected = "chol")
   })
   
   # what will happen when Analyze Result button clicks
