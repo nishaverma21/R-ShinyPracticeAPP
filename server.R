@@ -123,7 +123,7 @@ server <- function(input, output, session) {
   
   AnalystResult <- reactive({
     outp1 <- dbGetQuery(con, sqlInterpolate(ANSI(), 
-                                            "Select * from sampledata1 where upper(name) = ?dataname and 
+                                            "Select * from sampledata where upper(name) = ?dataname and 
                                             analyte = ?analyte and result <>'' and submitter = ?submitter ;",
                                             dataname = toupper(input$name) ,analyte  =input$x, submitter = user() ))
   })
