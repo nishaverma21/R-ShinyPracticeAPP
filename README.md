@@ -7,32 +7,53 @@ This application consist of following tabs
   4. Extract Data To Analyze
 
 --------LoginPage-------
-This tab is connected with PostgresSql loginInfo Table in mydb database. This table consist information of username, password  and role of user.
-User would able to login only if they enter correct username and password stored into logininfo table.
-If user put incorrect username or password , this application will pop-up a message "Incorrect Credentials"
-If user put correct username and password, user directed to SubmitData Tab with a table output having username and role information.
+1.	User need to enter Username and Password and then click Login Button.
 
+2.	If user didn’t enter correct username or password , message will popup with information as “Incorrect Credentials”.
+
+3.	If user enter correct username and password, user will direct to SubmitData tab.
+
+
+LoginPage is referring username and password information from mydb database of PostgreSQL.
+     
 ------SubmitData----------
-If user role is as 'Submitter' then 
-On SubmitData tab, Submitter can browse data that he want to be analized by analyst and then need to click on upload button to make that data store into sampledata table in mydb database. Once Data stored into database , pop-up message will display with text "Data Submitted Successfully"
+1.	After Login successfully, this tab will display role of User.
 
-If user role is as 'Analyst' 
-On SubmitData tab, Analyst can browse result that he created after analysis of data submit by submitter and then need to click on upload button to make that result feild updated into sampledata table for the required records. Once Result stored into database , pop-up message will display with text " Result Updated Successfully"
+2.	If user is “Submitter” then user can upload data that he want to be analyzed by analyst by clicking on browsing	button on this tab and user need to click submit button after browsing file to upload file to database.
+
+  Once Submitter click ”Submit” button, data will upload to mydb database into ”sampledata” table. Message will 	pop	up “Data Uploaded Successfully”.
+
+4.	If user is “Analyst” then user can upload result that he analyzed by clicking on browsing	button on this tab and         	user need to click submit button after browsing file to upload result to database.
+
+5.	Once Analyst click ”Submit” button, data will upload to mydb database into ”sampledata” table. Message will 	pop	up “Result Uploaded Successfully”.
+
+If Analyst try to upload file without result field, message will pop up “You only have access to upload result, 	kindly upload file with result field”
+
+Additional information :
+
+Whatever data user trying to upload will also display on this tab in main panel.
+Submitter can upload csv format file with headers as “name , sampleid, analyte”.
+Analyst can upload csv format file with headers as “name , sampleid, analyte, result”.
+
 
 -----View Result----------
-If user role is as 'Submitter' then 
-On View Result tab, Submitter can put the name of person whose result he want to see and need to select cordinate correspond to which he want analyst result and need to click on result button. Data from table will display on R-Shiny application but only for the data which was submitted by submitter.
-If there is no such record available in database then a pop-up message will display with "NO Record available with this data"
-Submitter can Download Result by clicking "Download Result" link on application on this tab
+1.	If user is “Submitter” then user can enter name for which he want to find result and need to select analyte from 	dropdown to let system know for which analyte user want results and need to click “Analyze Result” button.
 
-If user role is as 'Analyst' then 
-On View Result tab, if analyst try to fetch result after clicking result button, pop-up message will appear which says - ONLY SUBMITTER CAN VIEW RESULT FOR DATA SUBMITTED
+2.	On clicking “Analyze Result” button, result will display on this tab if such information is available in our database. 	Only data submitted by submitter will popup.
+
+3.	If Submitter trying to fetch result of name which is not available in our database then a message will popup with 	information as “NO Record available with this data”.
+
+4.	Entering name to fetch result is not case sensitive.
+
+5.	Submitter can click on “Download Result” link to download result in csv format.
+
+6.	If user is “Analyst” then on clicking “Analyze Result” button a message will popup with information as “ONLY 	SUBMITTER CAN VIEW RESULT FOR DATA SUBMIITED”.
+
 
 -----Extract Data To Analyze------
-If user role is as 'Submitter' then 
-When Submitter click Extract Data button, a pop up message will dispaly that tells "Submitter have no access to fetch this information"
+1.	If  user is “Analyst” then on clicking “Extract Data” button ,if there is any record without result updated into 	database then that data will popup on this tab.
 
-If user role is as 'Analyst' then 
-On Extract Data To Analyze tab, user can fetch data from table which need to be analyzed or for the record whose result is still not updated.
-Analyst can Download Data by clicking "Download Data to be Analyzed " link on application on this tab
+2.	Analyst can download data to analyze by clicking link “Download Data to be analyzed” on this tab.
+
+3.	If  user is “Submitter” then on clicking “Extract Data” button a message will popup with information as 	“Submitter have no access to fetch this information”.
 
