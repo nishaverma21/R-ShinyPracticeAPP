@@ -27,7 +27,7 @@ LoginPage is referring username and password information from mydb database of P
 
 5.	Once Analyst click ”Submit” button, data will upload to mydb database into ”sampledata” table. Message will 	pop	up “Result Uploaded Successfully”.
 
-If Analyst try to upload file without result field, message will pop up “You only have access to upload result, 	kindly upload file with result field”
+6.  If Analyst try to upload file without result field, message will pop up “You only have access to upload result, 	kindly upload file with result field”
 
 Additional information :
 
