@@ -21,7 +21,7 @@ LoginPage is referring username and password information from mydb database of P
 
 2.	If user is “Submitter” then user can upload data that he want to be analyzed by analyst by clicking on browsing	button on this tab and user need to click submit button after browsing file to upload file to database.
 
-  Once Submitter click ”Submit” button, data will upload to mydb database into ”sampledata” table. Message will 	pop	up “Data Uploaded Successfully”.
+3.  Once Submitter click ”Submit” button, data will upload to mydb database into ”sampledata” table. Message will 	pop	up    “Data Uploaded Successfully”.
 
 4.	If user is “Analyst” then user can upload result that he analyzed by clicking on browsing	button on this tab and         	user need to click submit button after browsing file to upload result to database.
 
