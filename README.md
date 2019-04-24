@@ -33,7 +33,7 @@ Additional information :
 
 Whatever data user trying to upload will also display on this tab in main panel.
 Submitter can upload csv format file with headers as “name , sampleid, analyte”.
-Analyst can upload csv format file with headers as “name , sampleid, analyte, result”.
+Analyst can upload csv format file with headers as “name , sampleid, analyte, analyteid, result”.
 
 
 -----View Result----------
